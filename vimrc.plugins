@@ -14,17 +14,17 @@ Plugin 'scrooloose/nerdcommenter'
 Plugin 'flazz/vim-colorschemes'
 Plugin 'mattn/gist-vim'
 Plugin 'godlygeek/tabular'
-Plugin 'pangloss/vim-javascript'
 Plugin 'amirh/HTML-AutoCloseTag'
 Plugin 'hail2u/vim-css3-syntax'
 Plugin 'gorodinskiy/vim-coloresque'
 
 " Syntax plugins
+Plugin 'pangloss/vim-javascript'
 Plugin 'elzr/vim-json'
 Plugin 'kchmck/vim-coffee-script'
 Plugin 'tpope/vim-rails'
-Plugin 'derekwyatt/vim-scala'
 Plugin 'plasticboy/vim-markdown'
 Plugin 'tpope/vim-haml'
+Plugin 'mustache/vim-mustache-handlebars'
 
 call vundle#end()

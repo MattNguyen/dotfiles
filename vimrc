@@ -85,9 +85,11 @@ set nospell
 set clipboard=unnamed
 set title
 set visualbell
+autocmd BufNewFile,BufRead *.coffee set filetype=coffee
 
 " Remappings
 let mapleader = ','
+:nmap ; :
 inoremap jk <ESC>
 noremap j gj
 noremap k gk
@@ -103,3 +105,39 @@ map zh zH
 
 " Airline Config
 let g:airline_theme='jellybeans'
+let g:airline_left_sep='›'
+let g:airline_right_sep='‹'
+
+" Ctrl-p Config
+let g:ctrlp_working_path_mode = 'ra'
+let g:ctrlp_custom_ignore = {
+    \ 'dir': 'bundle\/ruby$\|\.git$\|test/dummy$\|spec/dummy$\|\..*cache$\|vendor/cache$\|tmp$\|public/.*$',
+    \ 'file': 'eot$\|\.woff$\|\.ttf$\|\.svg$'
+    \ }
+
+" Nerdtree
+map <C-e> <plug>NERDTreeTabsToggle<CR>
+let NERDTreeShowBookmarks=1
+let NERDTreeIgnore=['\.py[cd]$', '\~$', '\.swo$', '\.swp$', '^\.git$', '^\.hg$', '^\.svn$', '\.bzr$']
+let NERDTreeChDirMode=0
+let NERDTreeQuitOnOpen=1
+let NERDTreeMouseMode=2
+let NERDTreeShowHidden=1
+let NERDTreeKeepTreeInNewTab=1
+let g:nerdtree_tabs_open_on_gui_startup=0
+
+" Tabularize
+nmap <Leader>a= :Tabularize /=<CR>
+vmap <Leader>a= :Tabularize /=<CR>
+nmap <Leader>a=> :Tabularize /=><CR>
+vmap <Leader>a=> :Tabularize /=><CR>
+nmap <Leader>a: :Tabularize /:<CR>
+vmap <Leader>a: :Tabularize /:<CR>
+nmap <Leader>a:: :Tabularize /:\zs<CR>
+vmap <Leader>a:: :Tabularize /:\zs<CR>
+nmap <Leader>a, :Tabularize /,<CR>
+vmap <Leader>a, :Tabularize /,<CR>
+nmap <Leader>a,, :Tabularize /,\zs<CR>
+vmap <Leader>a,, :Tabularize /,\zs<CR>
+nmap <Leader>a<Bar> :Tabularize /<Bar><CR>
+vmap <Leader>a<Bar> :Tabularize /<Bar><CR>
