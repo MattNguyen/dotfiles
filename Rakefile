@@ -13,78 +13,82 @@ HOMEBREW_PLUGINS = [
 ]
 
 desc "Setup development machine"
-task :install do
-  # Install oh-my-zsh
-  puts "Installing oh-my-zsh..."
-  system "curl -L http://install.ohmyz.sh | sh"
-  switch_to_zsh
+task :install => [:zsh,:homebrew,:vim,:rvm,:vundler,:dotfiles] do
+  puts "Finish installation!"
+end
 
-  # Install Homebrew
-  puts "Installing Homebrew..."
-  system 'ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"'
-  system "brew update"
-
-  # Install brew packages
-  puts "Installing brew packages..."
-  install_brew_packages_with_instructions
-
-  # Install VIM
-  if File.exist?('/opt/local/bin/vim')
-    puts "VIM already exists."
-  else
-    system "sudo mkdir -p /opt/local/bin"
-    system 'hg clone https://code.google.com/p/vim/ xxx'
-    system 'cd vim'
-    configure_command = <<-eos
-    ./config \
-    --prefix=/opt/local
-    --enable-pythoninterp \
-    --with-python-config-dir=/usr/bin/python2.7-config
-    eos
-    system configure_command
-    system 'make'
-    system 'sudo make install'
-    system 'cd .. && rm -rf xxx'
+namespace :install do
+  task :vundler do
+    puts "Installing Vundle and other VIM plugins..."
+    system 'git clone https://github.com/gmarik/Vundle.vim ~/.vim/bundle/Vundle.vim'
+    system 'mkdir ~/.vim/backups'
+    system 'vim +PluginInstall +qall'
+    system 'cd ~/.vim/bundle/YouCompleteMe && ./install.sh'
   end
 
-  # Install RVM
-  system "curl -sSL https://get.rvm.io | bash -s stable"
-
-  # Install ruby
-  print "Which version of ruby do you want to install? (e.g. '2.1.1') "
-  system "rvm install #{$stdin.gets.chomp}"
-
-  # Do all the dotfile stuff
-  files = Dir['*'] - %w[Rakefile README.md LICENSE]
-  files.each do |file|
-    system %Q{mkdir -p "$HOME/.#{File.dirname(file)}"} if file =~ /\//
-    if File.exist?(File.join(ENV['HOME'], ".#{file.sub(/\.erb$/, '')}"))
-      if File.identical? file, File.join(ENV['HOME'], ".#{file.sub(/\.erb$/, '')}")
-        puts "identical ~/.#{file.sub(/\.erb$/, '')}"
-      else
-        print "overwrite ~/.#{file.sub(/\.erb$/, '')}? [ynq] "
-        case $stdin.gets.chomp
-        when 'y'
-          replace_file(file)
-        when 'q'
-          exit
+  task :dotfiles do
+    files = Dir['*'] - %w[Rakefile README.md LICENSE]
+    files.each do |file|
+      system %Q{mkdir -p "$HOME/.#{File.dirname(file)}"} if file =~ /\//
+      if File.exist?(File.join(ENV['HOME'], ".#{file.sub(/\.erb$/, '')}"))
+        if File.identical? file, File.join(ENV['HOME'], ".#{file.sub(/\.erb$/, '')}")
+          puts "identical ~/.#{file.sub(/\.erb$/, '')}"
         else
-          puts "skipping ~/.#{file.sub(/\.erb$/, '')}"
+          print "overwrite ~/.#{file.sub(/\.erb$/, '')}? [ynq] "
+          case $stdin.gets.chomp
+          when 'y'
+            replace_file(file)
+          when 'q'
+            exit
+          else
+            puts "skipping ~/.#{file.sub(/\.erb$/, '')}"
+          end
         end
+      else
+        link_file(file)
       end
-    else
-      link_file(file)
     end
   end
 
-  # Install vundler
-  puts "Installing Vundle and other VIM plugins..."
-  system 'git clone https://github.com/gmarik/Vundle.vim ~/.vim/bundle/Vundle.vim'
-  system 'mkdir ~/.vim/backups'
-  system 'vim +PluginInstall +qall'
-  system 'cd ~/.vim/bundle/YouCompleteMe && ./install.sh'
+  task :zsh do
+    puts "Installing oh-my-zsh..."
+    system "curl -L http://install.ohmyz.sh | sh"
+    switch_to_zsh
+  end
 
-  puts "Finish dotfile installation!"
+  task :homebrew do
+    puts "Installing Homebrew..."
+    system 'ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"'
+    system "brew update"
+    puts "Installing brew packages..."
+    install_brew_packages_with_instructions
+  end
+
+  task :vim do
+    if File.exist?('/opt/local/bin/vim')
+      puts "VIM already exists."
+    else
+      system "sudo mkdir -p /opt/local/bin"
+      system 'hg clone https://code.google.com/p/vim/ xxx'
+      system 'cd vim'
+      configure_command = <<-eos
+      ./config \
+      --prefix=/opt/local
+      --enable-pythoninterp \
+      --with-python-config-dir=/usr/bin/python2.7-config
+      eos
+      system configure_command
+      system 'make'
+      system 'sudo make install'
+      system 'cd .. && rm -rf xxx'
+    end
+  end
+
+  task :rvm do
+    system "curl -sSL https://get.rvm.io | bash -s stable"
+    print "Which version of ruby do you want to install? (e.g. '2.1.1') "
+    system "rvm install #{$stdin.gets.chomp}"
+  end
 end
 
 def replace_file(file)

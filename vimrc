@@ -38,6 +38,7 @@ augroup END
 set backup                     " Backups are nice ...
 set backupdir=~/.vim/backups
 set directory=~/.vim/backups
+set undodir=~/.vim/backups
 set undofile                   " So is persistent undo ...
 set undolevels=1000            " Maximum number of changes that can be undone
 set undoreload=10000           " Maximum number lines to save for undo on a buffer reload
