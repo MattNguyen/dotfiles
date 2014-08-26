@@ -4,12 +4,18 @@ HOMEBREW_PLUGINS = [
   'ack',
   'cmake',
   'ctags',
+  'heroku',
   'node',
   'mercurial',
   'postgresql',
   'python',
   'redis',
+  'the_silver_searcher',
   'tmux'
+]
+
+PIP_PACKAGES = [
+  'Pygments'
 ]
 
 desc "Setup development machine"
@@ -47,6 +53,14 @@ namespace :install do
       else
         link_file(file)
       end
+    end
+  end
+
+  task :python_packages do
+    PIP_PACKAGES.each do |pkg|
+      puts "Installing #{pkg}..."
+      system "sudo pip install #{pkg}"
+      puts "Finish installing #{pkg}"
     end
   end
 

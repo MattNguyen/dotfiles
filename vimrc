@@ -12,7 +12,7 @@ set mouse=a               " Automatically enable mouse usage
 set mousehide             " Hide the mouse cursor while typing
 scriptencoding utf-8
 set clipboard=unnamed,unnamedplus
-autocmd BufEnter * if bufname("") !~ "^\[A-Za-z0-9\]*://" | lcd %:p:h | endif " Always switch to the current file directory
+"autocmd BufEnter * if bufname("") !~ "^\[A-Za-z0-9\]*://" | lcd %:p:h | endif " Always switch to the current file directory
 set virtualedit=onemore " Allow for cursor beyond last character
 set history=1000        " Store a ton of history (default is 20)
 set spell               " Spell checking on
@@ -85,7 +85,6 @@ set nospell
 set clipboard=unnamed
 set title
 set visualbell
-autocmd BufNewFile,BufRead *.coffee set filetype=coffee
 
 " Remappings
 let mapleader = ','
@@ -114,9 +113,11 @@ let g:ctrlp_custom_ignore = {
     \ 'dir': 'bundle\/ruby$\|\.git$\|test/dummy$\|spec/dummy$\|\..*cache$\|vendor/cache$\|tmp$\|public/.*$',
     \ 'file': 'eot$\|\.woff$\|\.ttf$\|\.svg$'
     \ }
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip 
+let g:ctrlp_user_command = 'ag --nogroup --nobreak --noheading --nocolor -g "" %s'
 
 " Nerdtree
-map <C-e> <plug>NERDTreeTabsToggle<CR>
+map <C-e> :NERDTreeToggle<CR>
 let NERDTreeShowBookmarks=1
 let NERDTreeIgnore=['\.py[cd]$', '\~$', '\.swo$', '\.swp$', '^\.git$', '^\.hg$', '^\.svn$', '\.bzr$']
 let NERDTreeChDirMode=0
@@ -141,3 +142,19 @@ nmap <Leader>a,, :Tabularize /,\zs<CR>
 vmap <Leader>a,, :Tabularize /,\zs<CR>
 nmap <Leader>a<Bar> :Tabularize /<Bar><CR>
 vmap <Leader>a<Bar> :Tabularize /<Bar><CR>
+
+" Fugitive
+nnoremap <silent> <leader>gs :Gstatus<CR>
+nnoremap <silent> <leader>gd :Gdiff<CR>
+nnoremap <silent> <leader>gc :Gcommit<CR>
+nnoremap <silent> <leader>gb :Gblame<CR>
+nnoremap <silent> <leader>gl :Glog<CR>
+nnoremap <silent> <leader>gp :Git push<CR>
+nnoremap <silent> <leader>gr :Gread<CR>
+nnoremap <silent> <leader>gw :Gwrite<CR>
+nnoremap <silent> <leader>ge :Gedit<CR>
+nnoremap <silent> <leader>gi :Git add -p %<CR>
+
+" Ack - the_silver_searcher
+let g:agprg = 'ag --nogroup --column --smart-case'
+nnoremap <leader>f :Ag -i<space>
