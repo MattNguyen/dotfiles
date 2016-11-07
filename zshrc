@@ -45,7 +45,7 @@ ZSH_CUSTOM=$HOME/.custom_zsh_plugins
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(rails ruby git bundler git-extras jsontools heroku last-working-dir codedir dotdir)
+plugins=(rails ruby git bundler git-extras jsontools heroku codedir dotdir)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -75,15 +75,16 @@ source $ZSH/oh-my-zsh.sh
 # For a full list of active aliases, run `alias`.
 #
 # Example aliases
-
-alias zshconfig="vim ~/.zshrc"
-alias ohmyzsh="vim ~/.oh-my-zsh"
-alias gs="git status"
-alias cat = "pygmentize -g"
+alias gs='git status'
 
 # Add RVM to PATH for scripting
 export PATH="$PATH:$HOME/.rvm/bin"
 PATH="$PATH:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin"
 
 # Do not use /usr/local/bin for VIM installation and place before /usr/bin path. Messes with OS X default configuration.
-PATH=/opt/local/bin:$PATH
+# PATH=/opt/local/bin:$PATH
+. $HOME/.asdf/asdf.sh
+. $HOME/.asdf/completions/asdf.bash
+
+export EDITOR='nvim'
+source ~/.bin/tmuxinator.zsh

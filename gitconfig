@@ -2,6 +2,6 @@
 	name = Matt Nguyen
 	email = matt@checkmate.io
 [core]
-	editor = /opt/local/bin/vim
+	editor = nvim
 [push]
 	default = current

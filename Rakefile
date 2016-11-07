@@ -1,6 +1,7 @@
 require 'rake'
 
 HOMEBREW_PLUGINS = [
+  'vim',
   'ack',
   'cmake',
   'ctags',
@@ -11,25 +12,33 @@ HOMEBREW_PLUGINS = [
   'python',
   'redis',
   'the_silver_searcher',
-  'tmux'
+  'tmux',
+  'macvim',
+  'neovim/neovim/neovim'
 ]
 
-PIP_PACKAGES = [
-  'Pygments'
+GEMS = [
+  'bundler',
+  'tmuxinator'
 ]
 
 desc "Setup development machine"
-task :install => [:zsh,:homebrew,:vim,:rvm,:vundler,:dotfiles] do
+task :install => [:zsh,:homebrew,:vim,:rvm,:gems,:vundler,:dotfiles] do
   puts "Finish installation!"
 end
 
 namespace :install do
+  task :gems do
+    puts 'Installing gems'
+    GEMS.each do |gem|
+      system "gem install #{gem}"
+    end
+  end
+
   task :vundler do
     puts "Installing Vundle and other VIM plugins..."
     system 'git clone https://github.com/gmarik/Vundle.vim ~/.vim/bundle/Vundle.vim'
     system 'mkdir ~/.vim/backups'
-    system 'vim +PluginInstall +qall'
-    system 'cd ~/.vim/bundle/YouCompleteMe && ./install.sh'
   end
 
   task :dotfiles do
@@ -54,6 +63,8 @@ namespace :install do
         link_file(file)
       end
     end
+    #system 'vim +PluginInstall +qall'
+    #system 'cd ~/.vim/bundle/YouCompleteMe && ./install.sh'
   end
 
   task :python_packages do
@@ -72,7 +83,7 @@ namespace :install do
 
   task :homebrew do
     puts "Installing Homebrew..."
-    system 'ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"'
+    system '/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"'
     system "brew update"
     puts "Installing brew packages..."
     install_brew_packages_with_instructions
