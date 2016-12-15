@@ -25,5 +25,6 @@ Plugin 'tpope/vim-rails'
 Plugin 'plasticboy/vim-markdown'
 Plugin 'mustache/vim-mustache-handlebars'
 Plugin 'elixir-lang/vim-elixir'
+Plugin 'posva/vim-vue'
 
 call vundle#end()

@@ -19,6 +19,7 @@ set spell               " Spell checking on
 set hidden              " Allow buffer switching without saving
 colorscheme jellybeans
 set iskeyword-=.        " '.' is an end of word designator
+set iskeyword-=,        " '.' is an end of word designator
 set iskeyword-=#        " '#' is an end of word designator
 set iskeyword-=-        " '-' is an end of word designator
 
@@ -80,7 +81,7 @@ set softtabstop=2               " Let backspace delete indent
 set nojoinspaces                " Prevents inserting two spaces after punctuation on a join (J)
 set splitright                  " Puts new vsplit windows to the right of the current
 set splitbelow                  " Puts new split windows to the bottom of the current
-autocmd FileType coffee,haskell,puppet,ruby,yml setlocal expandtab shiftwidth=2 softtabstop=2
+autocmd FileType coffee,haskell,puppet,ruby,yml,elixir,javascript setlocal expandtab shiftwidth=2 softtabstop=2
 set nospell
 set clipboard=unnamed
 set title
@@ -158,3 +159,6 @@ let g:ag_prg = 'ag --nogroup --column --smart-case'
 nnoremap <leader>f :Ag -i<space>
 
 let g:javascript_plugin_jsdoc = 1
+
+" Nerdcommenter
+let g:NERDSpaceDelims = 1
