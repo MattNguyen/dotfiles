@@ -81,7 +81,7 @@ set softtabstop=2               " Let backspace delete indent
 set nojoinspaces                " Prevents inserting two spaces after punctuation on a join (J)
 set splitright                  " Puts new vsplit windows to the right of the current
 set splitbelow                  " Puts new split windows to the bottom of the current
-autocmd FileType coffee,haskell,puppet,ruby,yml,elixir,javascript setlocal expandtab shiftwidth=2 softtabstop=2
+autocmd FileType coffee,haskell,puppet,ruby,yml,elixir,javascript,html,eelixir setlocal expandtab shiftwidth=2 softtabstop=2 iskeyword-=. iskeyword-=-
 set nospell
 set clipboard=unnamed
 set title
