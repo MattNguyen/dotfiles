@@ -20,14 +20,28 @@ error()   { echo "  [err ] $*" >&2; }
 
 # ── Xcode Command Line Tools ──────────────────────────────────────────────────
 install_xcode_clt() {
-  if xcode-select -p &>/dev/null; then
-    info "Xcode CLT already installed"
+  if ! xcode-select -p &>/dev/null; then
+    info "Installing Xcode Command Line Tools..."
+    xcode-select --install
+    until xcode-select -p &>/dev/null; do sleep 5; done
+    success "Xcode CLT installed"
     return
   fi
-  info "Installing Xcode Command Line Tools..."
-  xcode-select --install
-  until xcode-select -p &>/dev/null; do sleep 5; done
-  success "Xcode CLT installed"
+
+  if [[ "$UPGRADE" == "1" ]]; then
+    info "Checking for Xcode CLT updates..."
+    local label
+    label="$(softwareupdate --list 2>/dev/null | grep '^\* Label:.*[Cc]ommand [Ll]ine [Tt]ools' | sed 's/^\* Label: //' | xargs)"
+    if [[ -n "$label" ]]; then
+      info "Updating Xcode CLT: $label"
+      softwareupdate --install "$label" --agree-to-license
+      success "Xcode CLT updated"
+    else
+      info "Xcode CLT already up to date"
+    fi
+  else
+    info "Xcode CLT already installed"
+  fi
 }
 
 # ── Homebrew ──────────────────────────────────────────────────────────────────
