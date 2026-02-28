@@ -63,6 +63,8 @@ To add a new hook, create `packages/<name>/install.sh` and add `run_hook "<name>
 
 - **rectangle** uses `defaults import/export` (no symlinks) — preferences are in `packages/rectangle/rectangle.plist`
 - **nvim** machine-local overrides live in `~/.config/nvim/lua/local/` (gitignored via `packages/nvim/lua/local/*`). `dbui.lua` goes there for machine-specific DB connections. The `lua/local/.gitkeep` is tracked to ensure the directory exists on clone.
+- **zsh** — create `~/.zshrc.local` for machine/work-specific exports (PATH additions, VAULT_ADDR, DOCKER_HOST, etc.). Lives outside the repo; `.zshrc` sources it automatically if present.
+- **git** — `packages/git/gitconfig` has placeholder name/email (`Your Name` / `you@example.com`); set real values with `git config --global user.name` / `git config --global user.email` after install, or override via `~/.config/zsh/local.sh`
 - **gh** — `hosts.yml` (OAuth tokens) is gitignored; only `config.yml` is tracked
 - **claude-code** — `anthropic_key.sh` is gitignored; only `settings.json` is tracked
 - **codex** — `auth.json` is gitignored; only `config.toml` is tracked

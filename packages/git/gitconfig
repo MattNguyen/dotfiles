@@ -1,10 +1,6 @@
-# This is Git's per-user configuration file.
 [user]
- name = Matthew Nguyen
- email = matthew.nguyen@hadrian.co
-# Please adapt and uncomment the following lines:
-# name = Matthew Nguyen
-# email = matthew.nguyen@ip-10-4-9-109.us-gov-west-1.compute.internal
+ name = Your Name
+ email = you@example.com
 [push]
  autoSetupRemote = true
 [pull]

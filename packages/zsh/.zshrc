@@ -32,11 +32,8 @@ export VISUAL="nvim"
 export XDG_CONFIG_HOME="$HOME/.config"
 export PATH="$HOME/.local/bin:$PATH"
 export PATH=$HOME/go/bin:$PATH
-export PATH="/opt/homebrew/opt/postgresql@18/bin:$PATH"
-export VAULT_ADDR="https://vault.corp.hadrian-automation.com:8200"
-export VAULT_TOKEN="vault login -method=oidc -token-only role=default"
-export DOCKER_HOST="$(docker context inspect -f='{{.Endpoints.docker.Host}}')"
-export TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE=/var/run/docker.sock
+# Machine/work-local exports
+[[ -f "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local"
 
 # Setup nvim
 alias vim="nvim"
@@ -56,7 +53,7 @@ eval "$(direnv hook zsh)"
 eval "$(fnm env --use-on-cd)"
 
 # pnpm
-export PNPM_HOME="/Users/matt/Library/pnpm"
+export PNPM_HOME="$HOME/Library/pnpm"
 case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;

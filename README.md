@@ -5,7 +5,7 @@ macOS development environment setup.
 ## Install
 
 ```bash
-git clone https://github.com/matt-nguyen/dotfiles.git ~/code/dotfiles
+git clone https://github.com/mattnguyen/dotfiles.git ~/code/dotfiles
 cd ~/code/dotfiles
 ./install.sh
 ```
@@ -26,6 +26,27 @@ cd ~/code/dotfiles
    ```
 4. Optionally add `packages/mypkg/install.sh` for post-install steps
 5. Add the brew formula or cask to `Brewfile`
+
+## Machine-local zsh config
+
+Create `~/.zshrc.local` for machine or work-specific exports (lives outside this repo):
+
+```bash
+export VAULT_ADDR="https://vault.example.com:8200"
+export DOCKER_HOST="..."
+export PATH="/opt/homebrew/opt/postgresql@18/bin:$PATH"
+```
+
+`.zshrc` sources this file automatically if it exists.
+
+## Git identity
+
+`packages/git/gitconfig` ships with placeholder values. Set your identity after install:
+
+```bash
+git config --global user.name "Your Name"
+git config --global user.email "you@example.com"
+```
 
 ## Machine-local nvim config
 
