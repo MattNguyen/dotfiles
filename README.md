@@ -41,11 +41,13 @@ export PATH="/opt/homebrew/opt/postgresql@18/bin:$PATH"
 
 ## Git identity
 
-`packages/git/gitconfig` ships with placeholder values. Set your identity after install:
+`packages/git/gitconfig` ships with placeholder values and includes `~/.gitconfig.local`.
+Create `~/.gitconfig.local` on each machine with your real identity:
 
-```bash
-git config --global user.name "Your Name"
-git config --global user.email "you@example.com"
+```ini
+[user]
+    name = Your Name
+    email = you@example.com
 ```
 
 ## Machine-local nvim config
