@@ -61,6 +61,8 @@ install_homebrew() {
 
 # ── Packages ──────────────────────────────────────────────────────────────────
 install_packages() {
+  info "Updating Homebrew..."
+  brew update
   info "Installing packages from Brewfile..."
   if [[ "$UPGRADE" == "1" ]]; then
     brew bundle --file="$DOTFILES_DIR/Brewfile"
