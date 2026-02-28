@@ -56,12 +56,84 @@ install_packages() {
   success "Packages installed"
 }
 
+# ── Symlink engine ────────────────────────────────────────────────────────────
+# Reads packages/<name>/symlinks.conf and creates symlinks.
+# Format per line:  source -> $HOME/destination
+link_package() {
+  local pkg="$1"
+  local pkg_dir="$DOTFILES_DIR/packages/$pkg"
+  local conf="$pkg_dir/symlinks.conf"
+
+  [[ -f "$conf" ]] || return 0
+
+  while IFS= read -r line; do
+    # Skip comments and blank lines
+    [[ "$line" =~ ^[[:space:]]*# ]] && continue
+    [[ -z "${line// }" ]] && continue
+
+    local src dest
+    src="${line%% -> *}"
+    dest="${line##* -> }"
+    # Strip leading/trailing whitespace
+    src="${src#"${src%%[![:space:]]*}"}"
+    src="${src%"${src##*[![:space:]]}"}"
+    dest="${dest#"${dest%%[![:space:]]*}"}"
+    dest="${dest%"${dest##*[![:space:]]}"}"
+    # Expand $HOME
+    dest="${dest/\$HOME/$HOME}"
+
+    local src_path="$pkg_dir/$src"
+    local dest_dir
+    dest_dir="$(dirname "$dest")"
+
+    # Verify source exists
+    if [[ ! -e "$src_path" ]]; then
+      warning "Source not found, skipping: $src_path"
+      continue
+    fi
+
+    # Create parent directory
+    mkdir -p "$dest_dir"
+
+    # Already linked correctly — skip
+    if [[ -L "$dest" ]] && [[ "$(readlink "$dest")" == "$src_path" ]]; then
+      info "Already linked: $dest"
+      continue
+    fi
+
+    # Real file/dir exists — prompt before overwriting
+    if [[ -e "$dest" ]] && [[ ! -L "$dest" ]]; then
+      read -rp "  [warn] $dest exists. Overwrite? [y/N] " answer
+      if [[ ! "$answer" =~ ^[Yy]$ ]]; then
+        info "Skipping $dest"
+        continue
+      fi
+      rm -rf "$dest"
+    fi
+
+    # Remove stale symlink
+    [[ -L "$dest" ]] && rm "$dest"
+
+    ln -s "$src_path" "$dest"
+    success "Linked: $dest"
+  done < "$conf"
+}
+
+link_all() {
+  for pkg_dir in "$DOTFILES_DIR/packages"/*/; do
+    local pkg
+    pkg="$(basename "$pkg_dir")"
+    link_package "$pkg"
+  done
+}
+
 # ── Main ──────────────────────────────────────────────────────────────────────
 main() {
   info "Dotfiles install starting (UPGRADE=$UPGRADE)"
   install_xcode_clt
   install_homebrew
   install_packages
+  link_all
   success "Done."
 }
 
