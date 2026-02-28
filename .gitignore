@@ -1,2 +1,11 @@
-vim/bundle
-vim/backups
+# Machine-specific nvim config
+packages/nvim/lua/local/*
+!packages/nvim/lua/local/.gitkeep
+
+# Auth and secrets
+packages/codex/auth.json
+packages/claude-code/anthropic_key.sh
+packages/gh/hosts.yml
+
+# Backups
+packages/nvim/backups/

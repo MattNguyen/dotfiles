@@ -1,7 +1,0 @@
-[user]
-	name = Matt Nguyen
-	email = matt@checkmate.io
-[core]
-	editor = nvim
-[push]
-	default = current
