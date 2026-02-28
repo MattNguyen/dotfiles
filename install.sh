@@ -45,11 +45,23 @@ install_homebrew() {
   success "Homebrew installed"
 }
 
+# ── Packages ──────────────────────────────────────────────────────────────────
+install_packages() {
+  info "Installing packages from Brewfile..."
+  if [[ "$UPGRADE" == "1" ]]; then
+    brew bundle --file="$DOTFILES_DIR/Brewfile"
+  else
+    brew bundle --no-upgrade --file="$DOTFILES_DIR/Brewfile"
+  fi
+  success "Packages installed"
+}
+
 # ── Main ──────────────────────────────────────────────────────────────────────
 main() {
   info "Dotfiles install starting (UPGRADE=$UPGRADE)"
   install_xcode_clt
   install_homebrew
+  install_packages
   success "Done."
 }
 
