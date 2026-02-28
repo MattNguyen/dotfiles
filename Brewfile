@@ -1,6 +1,5 @@
 tap "derailed/k9s"
 tap "hashicorp/tap"
-tap "homebrew/cask-fonts"
 tap "int128/kubelogin"
 # Official Amazon AWS command-line interface
 brew "awscli"
