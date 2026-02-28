@@ -1,0 +1,11 @@
+{
+  "apiKeyHelper": "~/.claude/anthropic_key.sh",
+  "model": "sonnet[1m]",
+  "enabledPlugins": {
+    "gopls-lsp@claude-plugins-official": true,
+    "typescript-lsp@claude-plugins-official": true,
+    "superpowers@claude-plugins-official": true
+  },
+  "skipDangerousModePermissionPrompt": true,
+  "effortLevel": "medium"
+}
