@@ -127,14 +127,52 @@ link_all() {
   done
 }
 
+# ── Package hooks ─────────────────────────────────────────────────────────────
+# Sources packages/<name>/install.sh if it exists.
+# Hooks receive $DOTFILES_DIR and $UPGRADE as env vars.
+run_hook() {
+  local pkg="$1"
+  local hook="$DOTFILES_DIR/packages/$pkg/install.sh"
+  [[ -f "$hook" ]] || return 0
+  info "Running hook: $pkg"
+  # shellcheck source=/dev/null
+  source "$hook"
+}
+
+# ── Default shell ─────────────────────────────────────────────────────────────
+set_default_shell() {
+  local zsh_path
+  zsh_path="$(command -v zsh)"
+  if [[ "$SHELL" == "$zsh_path" ]]; then
+    info "zsh is already the default shell"
+    return
+  fi
+  if ! grep -qF "$zsh_path" /etc/shells; then
+    echo "$zsh_path" | sudo tee -a /etc/shells
+  fi
+  chsh -s "$zsh_path"
+  success "Default shell set to zsh"
+}
+
 # ── Main ──────────────────────────────────────────────────────────────────────
 main() {
   info "Dotfiles install starting (UPGRADE=$UPGRADE)"
+
   install_xcode_clt
   install_homebrew
   install_packages
   link_all
-  success "Done."
+
+  # Hooks run in explicit order — dependencies first
+  run_hook "zsh"
+  run_hook "node"
+  run_hook "python"
+  run_hook "rectangle"
+
+  set_default_shell
+
+  echo ""
+  success "Dotfiles installed. Restart your terminal."
 }
 
 main
