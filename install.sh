@@ -31,7 +31,7 @@ install_xcode_clt() {
   if [[ "$UPGRADE" == "1" ]]; then
     info "Checking for Xcode CLT updates..."
     local label
-    label="$(softwareupdate --list 2>/dev/null | grep '^\* Label:.*[Cc]ommand [Ll]ine [Tt]ools' | sed 's/^\* Label: //' | xargs)"
+    label="$(softwareupdate --list 2>/dev/null | grep '^\* Label:.*[Cc]ommand [Ll]ine [Tt]ools' | sed 's/^\* Label: //' | xargs)" || true
     if [[ -n "$label" ]]; then
       info "Updating Xcode CLT: $label"
       softwareupdate --install "$label" --agree-to-license
