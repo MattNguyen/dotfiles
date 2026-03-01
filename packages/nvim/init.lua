@@ -889,7 +889,12 @@ require('lazy').setup({
       }
       local installed = require('nvim-treesitter.config').get_installed()
       local to_install = vim.tbl_filter(function(lang) return not vim.list_contains(installed, lang) end, ensure_installed)
-      if #to_install > 0 then require('nvim-treesitter.install').install(to_install) end
+      if #to_install > 0 then
+        local ok, installer = pcall(require, 'nvim-treesitter.install')
+        if ok and installer and type(installer.install) == 'function' then
+          installer.install(to_install)
+        end
+      end
 
       -- Incremental selection using native vim.treesitter
       local current_node = nil
