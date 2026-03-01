@@ -181,6 +181,7 @@ main() {
 
   # Hooks run in explicit order — dependencies first
   run_hook "zsh"
+  run_hook "nvim"
   run_hook "node"
   run_hook "python"
   run_hook "rectangle"
