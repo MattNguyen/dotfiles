@@ -846,16 +846,27 @@ require('lazy').setup({
   {
     -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
+    lazy = false,
+    branch = 'main',
     build = ':TSUpdate',
     config = function()
-      -- In the new nvim-treesitter (Neovim 0.11+), highlighting and indentation are built-in.
-      -- The setup() call only configures the install directory for parsers.
-      require('nvim-treesitter').setup()
+      -- Install parsers on first load / when missing
+      require('nvim-treesitter').install {
+        'bash', 'c', 'cpp', 'css', 'dockerfile', 'go', 'gomod', 'gosum',
+        'html', 'javascript', 'json', 'lua', 'markdown', 'markdown_inline',
+        'proto', 'python', 'query', 'rust', 'sql', 'toml', 'tsx',
+        'typescript', 'vim', 'vimdoc', 'yaml',
+      }
 
-      -- Enable treesitter highlighting for all buffers that have a parser
+      -- Enable treesitter highlighting and indentation per filetype
       vim.api.nvim_create_autocmd('FileType', {
-        callback = function(ev)
-          if pcall(vim.treesitter.start, ev.buf) then return end
+        callback = function(args)
+          local buf, filetype = args.buf, args.match
+          local language = vim.treesitter.language.get_lang(filetype)
+          if not language then return end
+          if not vim.treesitter.language.add(language) then return end
+          vim.treesitter.start(buf, language)
+          vim.bo[buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
         end,
       })
 
