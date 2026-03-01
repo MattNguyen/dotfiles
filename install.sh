@@ -119,7 +119,7 @@ link_package() {
 
     # Real file/dir exists — prompt before overwriting
     if [[ -e "$dest" ]] && [[ ! -L "$dest" ]]; then
-      read -rp "  [warn] $dest exists. Overwrite? [y/N] " answer
+      read -rp "  [warn] $dest exists. Overwrite? [y/N] " answer || answer=""
       if [[ ! "$answer" =~ ^[Yy]$ ]]; then
         info "Skipping $dest"
         continue
