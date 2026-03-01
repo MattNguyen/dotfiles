@@ -859,43 +859,6 @@ require('lazy').setup({
         end,
       })
 
-      -- Install parsers that aren't already installed
-      local ensure_installed = {
-        'c',
-        'cpp',
-        'go',
-        'gomod',
-        'gosum',
-        'lua',
-        'python',
-        'rust',
-        'tsx',
-        'typescript',
-        'javascript',
-        'vimdoc',
-        'vim',
-        'query',
-        'markdown',
-        'markdown_inline',
-        'html',
-        'css',
-        'json',
-        'yaml',
-        'toml',
-        'bash',
-        'proto',
-        'sql',
-        'dockerfile',
-      }
-      local installed = require('nvim-treesitter.config').get_installed()
-      local to_install = vim.tbl_filter(function(lang) return not vim.list_contains(installed, lang) end, ensure_installed)
-      if #to_install > 0 then
-        local ok, installer = pcall(require, 'nvim-treesitter.install')
-        if ok and installer and type(installer.install) == 'function' then
-          installer.install(to_install)
-        end
-      end
-
       -- Incremental selection using native vim.treesitter
       local current_node = nil
       vim.keymap.set('n', 'gnn', function()
