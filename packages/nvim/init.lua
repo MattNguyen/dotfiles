@@ -850,13 +850,15 @@ require('lazy').setup({
     branch = 'main',
     build = ':TSUpdate',
     config = function()
-      -- Install parsers on first load / when missing
-      require('nvim-treesitter').install {
-        'bash', 'c', 'cpp', 'css', 'dockerfile', 'go', 'gomod', 'gosum',
-        'html', 'javascript', 'json', 'lua', 'markdown', 'markdown_inline',
-        'proto', 'python', 'query', 'rust', 'sql', 'toml', 'tsx',
-        'typescript', 'vim', 'vimdoc', 'yaml',
-      }
+      -- Install parsers on first load / when missing (main branch API)
+      pcall(function()
+        require('nvim-treesitter').install {
+          'bash', 'c', 'cpp', 'css', 'dockerfile', 'go', 'gomod', 'gosum',
+          'html', 'javascript', 'json', 'lua', 'markdown', 'markdown_inline',
+          'proto', 'python', 'query', 'rust', 'sql', 'toml', 'tsx',
+          'typescript', 'vim', 'vimdoc', 'yaml',
+        }
+      end)
 
       -- Enable treesitter highlighting and indentation per filetype
       vim.api.nvim_create_autocmd('FileType', {
