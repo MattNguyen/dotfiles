@@ -18,17 +18,19 @@ else
   info "nvim plugins already installed"
 fi
 
-# Ensure nvim-treesitter is on the main branch (new API) not master (old API)
-ts_dir="$lazy_dir/nvim-treesitter"
-if [[ -d "$ts_dir" ]]; then
-  current_branch="$(git -C "$ts_dir" branch --show-current 2>/dev/null)"
-  if [[ "$current_branch" != "main" ]]; then
-    info "Switching nvim-treesitter to main branch..."
-    git -C "$ts_dir" fetch origin main --quiet 2>/dev/null || true
-    git -C "$ts_dir" checkout main 2>/dev/null || true
-    git -C "$ts_dir" pull origin main --quiet 2>/dev/null || true
+# Ensure nvim-treesitter plugins are on main branch (new API) not master (old API)
+for ts_plugin in nvim-treesitter nvim-treesitter-textobjects; do
+  ts_dir="$lazy_dir/$ts_plugin"
+  if [[ -d "$ts_dir" ]]; then
+    current_branch="$(git -C "$ts_dir" branch --show-current 2>/dev/null)"
+    if [[ "$current_branch" != "main" ]]; then
+      info "Switching $ts_plugin to main branch..."
+      git -C "$ts_dir" fetch origin main --quiet 2>/dev/null || true
+      git -C "$ts_dir" checkout main 2>/dev/null || true
+      git -C "$ts_dir" pull origin main --quiet 2>/dev/null || true
+    fi
   fi
-fi
+done
 
 # Fix LuaSnip submodules — jsregexp can get into an inconsistent state
 # preventing Lazy from updating the plugin
